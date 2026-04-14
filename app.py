@@ -4,6 +4,9 @@ import os
 import requests
 import time
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ── Página ───────────────────────────────────────────────────────────────────
 st.set_page_config(
