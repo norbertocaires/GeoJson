@@ -5,6 +5,7 @@ import requests
 import time
 from datetime import datetime
 from dotenv import load_dotenv
+import openpyxl
 
 load_dotenv()
 
@@ -40,14 +41,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Rodovias ──────────────────────────────────────────────────────────────────
-RODOVIAS_REAIS = [
-    "Rodovia BR-101, Rio de Janeiro, Brasil",
-    "Rodovia BR-116 Presidente Dutra, São Paulo, Brasil",
-    "Rodovia BR-040, Belo Horizonte, Minas Gerais, Brasil",
-    "Rodovia BR-060, Brasília, Distrito Federal, Brasil",
-    "Rodovia BR-153 Belém-Brasília, Goiânia, Goiás, Brasil",
-]
+# ── Leitura do XLS ───────────────────────────────────────────────────────────
+def ler_rodovias_xlsx(arquivo) -> list[str]:
+    wb = openpyxl.load_workbook(arquivo)
+    ws = wb.active
+    rodovias = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        valor = row[0]
+        if valor and str(valor).strip():
+            rodovias.append(str(valor).strip())
+    return rodovias
 
 # ── Geocodificação ────────────────────────────────────────────────────────────
 _cache_geocode: dict = {}
@@ -76,7 +79,7 @@ def geocodificar_endereco(endereco: str, api_key: str) -> tuple[float, float] | 
 
 # ── Interface ─────────────────────────────────────────────────────────────────
 st.title("GeoJSON Highway Generator")
-st.caption("Geocodifica as 5 rodovias de referência e exporta um GeoJSON pronto para uso.")
+st.caption("Carregue um XLSX com as rodovias, geocodifique e exporte um GeoJSON pronto para uso.")
 
 st.divider()
 
@@ -91,11 +94,17 @@ with col1:
         placeholder="AIza...",
     )
     pasta_saida = st.text_input("Pasta de saída", value="output")
+    arquivo_xlsx = st.file_uploader("Arquivo de rodovias (.xlsx)", type=["xlsx"])
 
 with col2:
     st.subheader("Rodovias")
-    for rodovia in RODOVIAS_REAIS:
-        st.markdown(f"- {rodovia}")
+    if arquivo_xlsx:
+        rodovias = ler_rodovias_xlsx(arquivo_xlsx)
+        for rodovia in rodovias:
+            st.markdown(f"- {rodovia}")
+    else:
+        st.info("Faça upload de um arquivo XLSX para visualizar as rodovias.")
+        rodovias = []
 
 st.divider()
 
@@ -105,13 +114,16 @@ if executar:
     if not api_key.strip():
         st.error("Informe a Google API Key antes de continuar.")
         st.stop()
+    if not rodovias:
+        st.error("Faça upload de um arquivo XLSX com as rodovias antes de continuar.")
+        st.stop()
 
     progress_bar = st.progress(0)
     status_text = st.empty()
     features = []
-    total = len(RODOVIAS_REAIS)
+    total = len(rodovias)
 
-    for i, rodovia in enumerate(RODOVIAS_REAIS):
+    for i, rodovia in enumerate(rodovias):
         status_text.text(f"Geocodificando {i + 1} de {total} — {rodovia}")
         coords = [0.0, 0.0]
         resultado = geocodificar_endereco(rodovia, api_key.strip())
