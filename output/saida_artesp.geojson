@@ -1,0 +1,91 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4674"
+    }
+  },
+  "metadata": {
+    "schema_version": "1.0",
+    "ano_referencia": 2026,
+    "data_geracao": "2026-04-14T16:52:28.423831"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.4756001,
+          -22.8565536
+        ]
+      },
+      "properties": {
+        "id": 1,
+        "rodovia": "Rodovia BR-101, Rio de Janeiro, Brasil",
+        "data_processamento": "2026-04-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.318815,
+          -22.8220201
+        ]
+      },
+      "properties": {
+        "id": 2,
+        "rodovia": "Rodovia BR-116 Presidente Dutra, São Paulo, Brasil",
+        "data_processamento": "2026-04-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.9984852,
+          -19.9639831
+        ]
+      },
+      "properties": {
+        "id": 3,
+        "rodovia": "Rodovia BR-040, Belo Horizonte, Minas Gerais, Brasil",
+        "data_processamento": "2026-04-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.1760332,
+          -15.9579217
+        ]
+      },
+      "properties": {
+        "id": 4,
+        "rodovia": "Rodovia BR-060, Brasília, Distrito Federal, Brasil",
+        "data_processamento": "2026-04-14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -49.2258115,
+          -16.6674786
+        ]
+      },
+      "properties": {
+        "id": 5,
+        "rodovia": "Rodovia BR-153 Belém-Brasília, Goiânia, Goiás, Brasil",
+        "data_processamento": "2026-04-14"
+      }
+    }
+  ]
+}
